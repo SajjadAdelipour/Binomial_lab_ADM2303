@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Roll a fair die four times, count the sixes, and explore a binomial distribution through animation and simulation.">
+<meta name="theme-color" content="#731c37">
+<title>Binomial Dice Lab</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23731c37'/%3E%3Cg fill='white'%3E%3Ccircle cx='10' cy='9' r='2'/%3E%3Ccircle cx='22' cy='9' r='2'/%3E%3Ccircle cx='10' cy='16' r='2'/%3E%3Ccircle cx='22' cy='16' r='2'/%3E%3Ccircle cx='10' cy='23' r='2'/%3E%3Ccircle cx='22' cy='23' r='2'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;--burgundy:#731c37;--blue:#2468c2;--teal:#087f70;--ink:#352532;--muted:#665b67;--line:#e3d8df;--paper:#f7f4f6;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}button,select{font:inherit}button,select,summary{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.5;cursor:wait}button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e69718;outline-offset:4px}header{background:var(--burgundy);color:white;padding:21px max(24px,calc((100vw - 1220px)/2));display:flex;align-items:baseline;justify-content:space-between;gap:16px}header h1{font-size:1.65rem;letter-spacing:-.035em;margin:0;font-weight:700}header span{font-size:.875rem;color:#f1dbe4;white-space:nowrap}main{max-width:1220px;margin:auto;padding:27px 24px 34px}.intro{margin:0 0 23px;color:var(--muted);font-size:1.05rem}.intro strong{color:var(--ink)}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);background:white;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 28px #4a1b3010;overflow:hidden}.experiment{padding:25px 27px;border-right:1px solid var(--line)}h2{font-size:1.18rem;letter-spacing:-.015em;margin:0 0 3px}.subtitle{color:var(--muted);margin:0;font-size:.9375rem}.stage{height:192px;margin:16px 0 0;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse at 50% 65%,#f6edf2,transparent 68%);border-radius:12px}.die{font-family:"DejaVu Sans","Segoe UI Symbol","Noto Sans Symbols 2",sans-serif;font-size:158px;line-height:1;display:inline-block;transform-origin:center center;filter:drop-shadow(0 8px 5px #5b263718);color:var(--burgundy);user-select:none}.die.success{color:var(--teal)}.die.waiting{opacity:.35}.die.rolling{animation:tumble .4s linear infinite}.roll-status{position:absolute;bottom:0;margin:0;color:var(--muted);font-size:.9375rem;min-height:24px}@keyframes tumble{0%{transform:translate(-10px,0) rotate(-16deg)}25%{transform:translate(12px,-17px) rotate(22deg)}50%{transform:translate(-13px,-5px) rotate(-24deg)}75%{transform:translate(9px,-22px) rotate(13deg)}100%{transform:translate(-10px,0) rotate(-16deg)}}.results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:21px}.slot{text-align:center}.slot .label{display:block;color:var(--muted);font-size:.875rem;margin-bottom:5px}.face{height:67px;border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:"DejaVu Sans","Segoe UI Symbol","Noto Sans Symbols 2",sans-serif;font-size:50px;color:var(--burgundy);background:#fafcfd;transition:background .18s,border-color .18s,transform .18s}.face.empty{font-family:inherit;color:#91a3af;font-size:1.3rem}.face.success{background:#e4f6f0;border:2px solid var(--teal);color:var(--teal)}.face.just-landed{animation:land .25s ease-out}.classification{font-size:.8125rem;min-height:21px;margin-top:5px;color:var(--muted)}.slot.success .classification{color:var(--teal);font-weight:650}@keyframes land{0%{transform:scale(.88)}65%{transform:scale(1.08)}100%{transform:scale(1)}}.count-line{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:20px 0 17px;border-top:1px solid var(--line);padding-top:16px}.count-label{font-size:1rem}.count{font-size:2.2rem;line-height:1;font-weight:750;letter-spacing:-.05em;color:var(--teal)}.count small{font-size:.95rem;letter-spacing:0;color:var(--muted);font-weight:450}.controls{display:flex;gap:9px;flex-wrap:wrap}.button{border:1px solid var(--line);border-radius:9px;background:white;color:var(--burgundy);padding:10px 15px;font-weight:650;font-size:.9375rem;min-height:45px}.button.primary{background:var(--burgundy);border-color:var(--burgundy);color:white}.button:not(:disabled):hover{border-color:var(--burgundy);background:#f9eff3}.button.primary:not(:disabled):hover{background:#8b2b48;border-color:#8b2b48}.reset{border:0;padding:10px 6px;background:none;color:var(--muted);text-decoration:underline;text-underline-offset:4px;font-size:.875rem}.experiment-note{font-size:.875rem;color:var(--muted);margin:17px 0 0;min-height:42px}.distribution{padding:25px 26px 22px}.graph-heading{display:flex;justify-content:space-between;gap:16px;align-items:baseline}.total{font-size:.875rem;color:var(--muted)}.total strong{color:var(--ink);font-variant-numeric:tabular-nums}.legend{display:flex;gap:19px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:.875rem}.legend span{display:flex;align-items:center;gap:7px}.swatch{width:12px;height:12px;border-radius:2px;display:inline-block}.swatch.model{background:var(--blue)}.swatch.observed{background:var(--teal)}.chart{display:block;width:100%;height:auto;margin-top:8px;overflow:visible}.event{padding-top:12px;border-top:1px solid var(--line)}.event-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.9375rem}select{min-height:39px;padding:6px 29px 6px 10px;background:white;border:1px solid #b4c7d6;border-radius:7px;color:var(--ink)}.probability{display:flex;justify-content:space-between;align-items:baseline;margin-top:11px;gap:10px}.probability .notation{font-size:1.15rem;font-weight:600}.probability .value{font-size:1.85rem;font-weight:750;letter-spacing:-.03em;color:var(--blue);font-variant-numeric:tabular-nums}.included{font-size:.875rem;color:var(--muted);margin:0}.observed-note{font-size:.875rem;color:var(--teal);margin:7px 0 0;min-height:21px}.math{font-variant-numeric:tabular-nums}.connection{margin:20px 2px 0;font-size:.9375rem;color:var(--muted)}.connection strong{color:var(--ink)}details{margin-top:21px;border-top:1px solid #c9d7e1;padding-top:17px}summary{color:var(--burgundy);font-weight:650;font-size:1rem;cursor:pointer;width:fit-content}details .explanation{max-width:850px;margin:13px 0 15px;color:var(--muted);font-size:.9375rem}.orders{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;max-width:1000px}.sequence{display:flex;align-items:center;gap:6px;animation:arrive .35s both}.sequence-number{font-size:.8125rem;color:var(--muted);width:14px;margin-right:1px}.outcome{flex:1;min-height:47px;display:flex;align-items:center;justify-content:center;font-size:.875rem;border:1px solid #cbd8e2;border-radius:6px;background:white;color:var(--muted)}.outcome.six{background:#e4f6f0;color:var(--teal);border-color:#67ac9f;font-weight:700}.formula{font-size:1.06rem;margin:17px 0 2px;line-height:1.8;overflow-wrap:anywhere}.order-probability{font-size:.9375rem;color:var(--muted);margin:0}sup{font-size:.75em}.fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;font-size:.9em;margin:0 3px}.fraction span:first-child{border-bottom:1px solid;padding-bottom:2px}.fraction span:last-child{padding-top:2px}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}footer{font-size:.875rem;margin-top:22px;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.order-group{padding:14px 0 16px;border-bottom:1px solid var(--line)}.order-group:first-child{padding-top:0}.order-group:last-child{border-bottom:0}.order-group h3{font-size:1rem;margin:0 0 4px;color:var(--ink)}.group-probability{font-size:.9375rem;color:var(--muted);margin:0 0 12px;line-height:1.7}.order-groups{margin-top:14px}.order-labels{display:flex;gap:6px;max-width:310px;margin:0 0 9px;padding-left:21px}.order-labels span{flex:1;text-align:center;font-size:.8125rem;color:var(--muted)}
+@media(max-width:850px){main{padding:20px 17px}.workspace{grid-template-columns:1fr}.experiment{border-right:0;border-bottom:1px solid var(--line);padding:23px}.distribution{padding:23px}.stage{height:160px}.die{font-size:138px}.orders{grid-template-columns:repeat(2,minmax(0,1fr))}header{padding:18px 20px}header h1{font-size:1.4rem}.connection{margin-top:17px}}@media(max-width:480px){header span{font-size:.8125rem}header h1{font-size:1.25rem}.intro{font-size:1rem}.experiment,.distribution{padding:20px 16px}.button{padding:10px 12px}.results{gap:7px}.face{height:61px;font-size:45px}.classification{font-size:.75rem}.orders{grid-template-columns:1fr}.probability .value{font-size:1.6rem}.legend{gap:13px;font-size:.8125rem}.graph-heading{gap:8px}.total{font-size:.8125rem}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.statistics{margin-top:26px;padding-top:22px;border-top:1px solid #c9b6c0}.statistics h2{color:var(--burgundy);font-size:1.2rem}.statistics-intro{margin:5px 0 16px;color:var(--muted);font-size:.9375rem}.measure-table{border-collapse:collapse;width:100%;font-size:.9375rem;line-height:1.7}.measure-table th,.measure-table td{text-align:left;vertical-align:top;padding:12px 17px 12px 0;border-bottom:1px solid var(--line)}.measure-table thead th{font-size:.875rem;color:var(--muted);font-weight:600;padding-top:0;padding-bottom:9px}.measure-table tbody th{width:19%;font-weight:650}.measure-table td:nth-child(2){width:38%;font-variant-numeric:tabular-nums}.measure-table td:last-child{padding-right:0;color:var(--muted)}.mean-interpretation{color:var(--muted);font-size:.9375rem;max-width:900px;margin:14px 0 21px}.mean-comparison-title{font-size:1rem;font-weight:650;margin:0 0 11px}.mean-readouts{display:flex;gap:16px 30px;flex-wrap:wrap;font-size:.9375rem}.mean-readouts span{display:flex;align-items:center;gap:7px}.mean-readouts i{display:inline-block;width:12px;height:12px;border-radius:2px;flex-shrink:0}.model-readout{color:var(--burgundy)}.model-readout i{background:var(--burgundy)}.simulation-readout{color:var(--teal)}.simulation-readout i{background:var(--teal)}.mean-axis{height:94px;position:relative;margin:13px 17px 0;max-width:970px}.mean-axis-line{position:absolute;left:0;right:0;top:39px;height:2px;background:#b8aeb8}.mean-tick{position:absolute;top:72px;transform:translateX(-50%);font-size:.875rem;color:var(--muted)}.mean-tick::before{content:'';position:absolute;left:50%;top:-36px;height:8px;width:1px;background:#a295a1}.mean-marker{position:absolute;width:4px;transform:translateX(-50%);border-radius:2px;transition:left .35s ease}.model-marker{top:11px;height:30px;background:var(--burgundy)}.simulation-marker{top:40px;height:27px;background:var(--teal)}.mean-axis-caption{margin:0;text-align:center;max-width:1004px;color:var(--muted);font-size:.875rem}.mean-explanation{font-size:.9375rem;color:var(--muted);margin:12px 0 0;max-width:950px}
+@media(max-width:650px){.measure-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}.measure-table tr{display:block;padding:12px 0;border-bottom:1px solid var(--line)}.measure-table th,.measure-table td{display:block;width:100%!important;border:0;padding:0}.measure-table tbody th{margin-bottom:6px}.measure-table td:last-child{margin-top:5px}.mean-readouts{display:block}.mean-readouts span+span{margin-top:9px}.mean-readouts span{flex-wrap:wrap}.statistics h2{font-size:1.1rem}}
+
+</style>
+</head>
+<body>
+<header><h1>Count the sixes</h1><span>ADM 2303 · Binomial</span></header>
+<main>
+<p class="intro">Roll a fair die <strong>four times</strong>. Count how many rolls show <strong>six</strong>.</p>
+<div class="workspace">
+<section class="experiment" aria-labelledby="experiment-title">
+<h2 id="experiment-title">One experiment, four rolls</h2>
+<p class="subtitle">Each roll is independent. A six has probability <span class="math">1/6</span>.</p>
+<div class="stage"><span id="die" class="die waiting" role="img" aria-label="Die waiting to be rolled">⚀</span><p id="roll-status" class="roll-status">Ready to roll</p></div>
+<div class="results" id="results" aria-label="Results of the four rolls"></div>
+<div class="count-line"><span class="count-label">Number of sixes, <strong>X</strong></span><span id="count" class="count">0 <small>of 4 rolls</small></span></div>
+<div class="controls"><button id="roll" class="button primary">Roll four times</button><button id="repeat" class="button">Add 100 experiments</button><button id="reset" class="reset">Reset</button></div>
+<p class="experiment-note" id="experiment-note">Four rolls produce one count. Repeat the experiment to see how the counts vary.</p>
+<p id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+</section>
+<section class="distribution" aria-labelledby="distribution-title">
+<div class="graph-heading"><h2 id="distribution-title">How many sixes?</h2><span class="total"><strong id="total">0</strong> experiments</span></div>
+<div class="legend"><span><i class="swatch model" aria-hidden="true"></i>Model probability</span><span><i class="swatch observed" aria-hidden="true"></i>Simulated proportion</span></div>
+<svg id="chart" class="chart" viewBox="0 0 550 315" role="img" aria-label="Binomial probabilities for zero through four sixes"></svg>
+<div class="event">
+<div class="event-controls"><span>Probability of</span><label class="sr-only" for="event-type">Type of event</label><select id="event-type"><option value="exact">exactly</option><option value="atmost">at most</option><option value="atleast">at least</option></select><label class="sr-only" for="threshold">Number of sixes</label><select id="threshold"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option></select><span id="event-noun">sixes</span></div>
+<div class="probability"><span id="event-notation" class="notation">P(X = 2)</span><span id="probability" class="value">11.57%</span></div>
+<p id="included" class="included">Count included: 2</p>
+<p id="observed-note" class="observed-note">Run experiments to compare with the model.</p>
+</div>
+</section>
+</div>
+<p class="connection"><strong>One roll:</strong> six or not six, a Bernoulli trial. <strong>Four rolls:</strong> X counts the sixes, so X follows a binomial distribution with n = 4 and p = 1/6.</p>
+<details id="orders-details">
+<summary id="orders-summary">Show the six possible orders for exactly two sixes</summary>
+<p id="orders-explanation" class="explanation">Each row specifies which rolls show six. “Not six” includes any of the other five faces.</p>
+<div id="orders" class="order-groups" aria-label="All orders matching the selected probability event"></div>
+<p id="orders-formula" class="formula"></p>
+<p id="orders-note" class="order-probability"></p>
+</details>
+<section class="statistics" aria-labelledby="statistics-title">
+<h2 id="statistics-title">Mean and variability of the binomial count</h2>
+<p class="statistics-intro">X is the number of sixes in one experiment. Here, n = 4 and p = 1/6.</p>
+<table class="measure-table">
+<thead><tr><th scope="col">Measure</th><th scope="col">Calculation</th><th scope="col">What it tells us</th></tr></thead>
+<tbody>
+<tr><th scope="row">Mean, μ</th><td>E(X) = np<br>4 × (1/6) = 2/3 ≈ <strong>0.667</strong></td><td>The expected number of sixes per four-roll experiment.</td></tr>
+<tr><th scope="row">Variance, σ<sup>2</sup></th><td>V(X) = np(1 − p)<br>4 × (1/6) × (5/6) = 5/9 ≈ <strong>0.556</strong></td><td>The probability-weighted average of the squared deviations from the mean.</td></tr>
+<tr><th scope="row">Standard deviation, σ</th><td>SD(X) = √[np(1 − p)]<br>√(5/9) ≈ <strong>0.745</strong> sixes</td><td>Describes the spread of the count around its mean, in the same units as X.</td></tr>
+</tbody>
+</table>
+<p class="mean-interpretation">The mean can be a fraction because it describes an average across repeated experiments. Each experiment still has a whole number of sixes.</p>
+<h3 class="mean-comparison-title">Compare the model mean with the simulated average</h3>
+<div class="mean-readouts"><span class="model-readout"><i aria-hidden="true"></i>Model mean: <strong>0.667</strong> sixes</span><span class="simulation-readout"><i aria-hidden="true"></i>Simulated average: <strong id="simulated-mean">No experiments yet</strong></span></div>
+<div class="mean-axis" role="img" id="mean-axis" aria-label="The binomial model mean is two-thirds of a six per experiment.">
+<div class="mean-axis-line"></div>
+<span class="mean-tick" style="left:0%">0</span><span class="mean-tick" style="left:25%">1</span><span class="mean-tick" style="left:50%">2</span><span class="mean-tick" style="left:75%">3</span><span class="mean-tick" style="left:100%">4</span>
+<span class="mean-marker model-marker" style="left:16.6666667%" aria-hidden="true"></span>
+<span id="simulated-mean-marker" class="mean-marker simulation-marker" hidden aria-hidden="true"></span>
+</div>
+<p class="mean-axis-caption">Average number of sixes per four-roll experiment</p>
+<p id="mean-explanation" class="mean-explanation">Add experiments above to see their average count on this scale. The model mean stays fixed at 2/3.</p>
+</section>
+<footer>The model probabilities stay fixed. Simulated proportions fluctuate and tend to approach them as more experiments are repeated.</footer>
+</main>
+<script>
+'use strict';
+const N=4,P=1/6,FACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+const probabilityMass=Array.from({length:N+1},(_,x)=>choose(N,x)*P**x*(1-P)**(N-x));
+const state={frequencies:[0,0,0,0,0],total:0,rolls:[],busy:false,token:0};
+const $=id=>document.getElementById(id);
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function choose(n,k){let v=1;for(let i=1;i<=k;i++)v=v*(n-i+1)/i;return v;}
+function rollFace(){const a=new Uint32Array(1);do{crypto.getRandomValues(a);}while(a[0]>=4294967292);return a[0]%6+1;}
+const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+function setBusy(value){state.busy=value;$('roll').disabled=value;$('repeat').disabled=value;}
+function renderSlots(){
+ $('results').innerHTML=Array.from({length:N},(_,i)=>{
+  const face=state.rolls[i],success=face===6;
+  return `<div class="slot${success?' success':''}"><span class="label">Roll ${i+1}</span><div class="face ${face?'':'empty'}${success?' success':''}" ${face?`role="img" aria-label="Roll ${i+1}: ${face}${success?', a six':''}"`:'aria-label="Not rolled yet"'}>${face?FACES[face-1]:'?'}</div><div class="classification">${face?(success?'Six':'Not six'):'Waiting'}</div></div>`;
+ }).join('');
+ const sixes=state.rolls.filter(x=>x===6).length;
+ $('count').innerHTML=`${sixes} <small>${state.rolls.length===4?'in 4 rolls':`after ${state.rolls.length} of 4 rolls`}</small>`;
+}
+function includedCounts(){const type=$('event-type').value,k=Number($('threshold').value);return Array.from({length:5},(_,i)=>i).filter(i=>type==='exact'?i===k:type==='atmost'?i<=k:i>=k);}
+function percentage(x){return (x*100).toFixed(2)+'%';}
+let renderedOrdersKey='';
+function renderChart(){
+ const selected=includedCounts();
+ const observed=state.frequencies.map(x=>state.total?x/state.total:0);
+ const top=1;
+ const left=48,right=528,base=262,height=202,group=(right-left)/5,bar=25;
+ let svg='<title>Number of sixes in four rolls</title><desc>Blue bars show theoretical binomial probabilities. Green bars show simulated proportions. Highlighted counts belong to the selected event.</desc>';
+ svg+='<text x="48" y="21" font-size="14" fill="#53697a">Probability / proportion</text>';
+ const steps=Math.round(top*10);
+ for(let j=0;j<=steps;j++){
+  const v=j/10,y=base-v/top*height;
+  svg+=`<line x1="${left}" x2="${right}" y1="${y}" y2="${y}" stroke="${j===0?'#91a8bb':'#e8eef3'}"/><text x="${left-8}" y="${y+5}" text-anchor="end" font-size="14" fill="#53697a">${Math.round(v*100)}%</text>`;
+ }
+ probabilityMass.forEach((v,i)=>{
+  const center=left+group*(i+.5),active=selected.includes(i),h=v/top*height,oh=observed[i]/top*height;
+  svg+=`<rect x="${center-bar-2}" y="${base-h}" width="${bar}" height="${h}" rx="3" fill="${active?'#2468c2':'#bfd0e5'}"><title>${i} sixes: model probability ${percentage(v)}</title></rect>`;
+  if(state.total)svg+=`<rect x="${center+2}" y="${base-oh}" width="${bar}" height="${oh}" rx="3" fill="${active?'#087f70':'#bad6d0'}"><title>${i} sixes: ${state.frequencies[i]} of ${state.total} experiments (${percentage(observed[i])})</title></rect>`;
+  svg+=`<text x="${center-14}" y="${Math.max(42,base-h-8)}" text-anchor="middle" font-size="13" fill="${active?'#2468c2':'#6b7f91'}">${(v*100).toFixed(1)}%</text><text x="${center}" y="${base+25}" text-anchor="middle" font-size="17" fill="${active?'#152c40':'#53697a'}" font-weight="${active?700:450}">${i}</text>`;
+ });
+ svg+='<text x="288" y="310" text-anchor="middle" font-size="15" fill="#53697a">Number of sixes, X</text>';
+ $('chart').innerHTML=svg;
+ $('total').textContent=state.total.toLocaleString();
+ const type=$('event-type').value,k=Number($('threshold').value),operator=type==='exact'?'=':type==='atmost'?'≤':'≥';
+ const probability=selected.reduce((sum,i)=>sum+probabilityMass[i],0);
+ const occurrences=selected.reduce((sum,i)=>sum+state.frequencies[i],0);
+ $('event-notation').textContent=`P(X ${operator} ${k})`;
+ $('event-noun').textContent=k===1?'six':'sixes';
+ $('probability').textContent=percentage(probability);
+ $('included').textContent=`${selected.length===1?'Count included':'Counts included'}: ${selected.join(', ')} · Model probability = ${probability.toFixed(4)}`;
+ $('observed-note').textContent=state.total?`Observed: ${occurrences.toLocaleString()} of ${state.total.toLocaleString()} experiments (${percentage(occurrences/state.total)}).`:'Run experiments to compare with the model.';
+ $('chart').setAttribute('aria-label',`Binomial distribution. ${state.total} experiments. Selected event: ${type==='exact'?'exactly':type==='atmost'?'at most':'at least'} ${k} sixes. Model probability ${percentage(probability)}.`);
+ renderOrders();
+ renderStatistics();
+}
+function countStatistics(){
+ const mean=N*P,variance=N*P*(1-P);
+ const simulatedMean=state.total?state.frequencies.reduce((sum,frequency,x)=>sum+x*frequency,0)/state.total:null;
+ return {mean,variance,standardDeviation:Math.sqrt(variance),simulatedMean,experiments:state.total};
+}
+function renderStatistics(){
+ const statistics=countStatistics(),marker=$('simulated-mean-marker');
+ const hasExperiments=statistics.simulatedMean!==null;
+ $('simulated-mean').textContent=hasExperiments?statistics.simulatedMean.toFixed(3)+' sixes':'No experiments yet';
+ marker.hidden=!hasExperiments;
+ if(hasExperiments)marker.style.left=(statistics.simulatedMean/N*100)+'%';
+ $('mean-explanation').textContent=hasExperiments
+  ?`Across ${statistics.experiments.toLocaleString()} ${statistics.experiments===1?'experiment':'experiments'}, the average count is ${statistics.simulatedMean.toFixed(3)} sixes. It fluctuates and tends to approach 2/3 as more independent experiments are repeated.`
+  :'Add experiments above to see their average count on this scale. The model mean stays fixed at 2/3.';
+ $('mean-axis').setAttribute('aria-label',hasExperiments
+  ?`Average number of sixes per experiment, on a scale from 0 to 4. Model mean: ${statistics.mean.toFixed(3)}. Simulated average: ${statistics.simulatedMean.toFixed(3)}, based on ${statistics.experiments} experiments.`
+  :'Average number of sixes per experiment, on a scale from 0 to 4. The model mean is two-thirds. No simulated experiments yet.');
+}
+function record(rolls){const x=rolls.filter(face=>face===6).length;state.frequencies[x]++;state.total++;return x;}
+function snapshot(){return {experiments:state.total,lastRolls:[...state.rolls],frequencies:[...state.frequencies],modelProbabilities:[...probabilityMass],event:{type:$('event-type').value,k:Number($('threshold').value)},busy:state.busy};}
+async function runExperiment(){
+ if(state.busy)throw new Error('An experiment is already running.');
+ setBusy(true);const token=++state.token;state.rolls=[];renderSlots();
+ $('experiment-note').textContent='Count the sixes as each roll lands.';$('die').classList.remove('waiting','success');
+ try{
+  for(let i=0;i<N;i++){
+   if(token!==state.token)return snapshot();
+   const result=rollFace();$('roll-status').textContent=`Rolling ${i+1} of 4…`;
+   $('die').classList.add('rolling');
+   const duration=reducedMotion?80:650,start=performance.now();
+   while(performance.now()-start<duration){if(token!==state.token)return snapshot();$('die').textContent=FACES[rollFace()-1];await delay(reducedMotion?80:65);}
+   if(token!==state.token)return snapshot();
+   $('die').classList.remove('rolling');$('die').classList.toggle('success',result===6);$('die').textContent=FACES[result-1];$('die').setAttribute('aria-label',`Die shows ${result}`);
+   state.rolls.push(result);renderSlots();$('results').children[i].querySelector('.face').classList.add('just-landed');
+   $('roll-status').textContent=result===6?'A six!':'Not six';
+   await delay(reducedMotion?40:220);
+  }
+  if(token!==state.token)return snapshot();
+  const x=record(state.rolls);renderChart();
+  $('roll-status').textContent='Four rolls complete';$('experiment-note').textContent=`${x} ${x===1?'six':'sixes'} in four rolls. This experiment adds one observation at X = ${x}.`;
+  $('announcement').textContent=`Four rolls complete: ${state.rolls.join(', ')}. ${x} sixes. ${state.total} experiments recorded.`;
+  setBusy(false);
+  return snapshot();
+ }finally{if(token===state.token){$('die').classList.remove('rolling');setBusy(false);}}
+}
+async function addExperiments(amount=100){
+ if(!Number.isInteger(amount)||amount<1||amount>10000)throw new Error('Use a whole number from 1 to 10000.');
+ if(state.busy)throw new Error('An experiment is already running.');
+ setBusy(true);const token=++state.token;let last=[];
+ try{
+  for(let i=0;i<amount;i++){
+   if(token!==state.token)return snapshot();
+   last=Array.from({length:N},rollFace);record(last);
+   if((i+1)%20===0){renderChart();await delay(reducedMotion?0:25);}
+  }
+  if(token!==state.token)return snapshot();
+  state.rolls=last;renderSlots();renderChart();
+  $('die').classList.remove('waiting','rolling');$('die').classList.toggle('success',last[3]===6);$('die').textContent=FACES[last[3]-1];$('die').setAttribute('aria-label',`Die shows ${last[3]}`);
+  $('roll-status').textContent='Final roll of the latest experiment';
+  $('experiment-note').textContent=`Added ${amount.toLocaleString()} experiments, with four rolls in each. The slots show the latest experiment.`;
+  $('announcement').textContent=$('experiment-note').textContent+` ${state.total} experiments recorded.`;
+  setBusy(false);
+  return snapshot();
+ }finally{if(token===state.token)setBusy(false);}
+}
+function reset(){state.token++;state.frequencies=[0,0,0,0,0];state.total=0;state.rolls=[];setBusy(false);renderSlots();renderChart();$('die').className='die waiting';$('die').textContent=FACES[0];$('die').setAttribute('aria-label','Die waiting to be rolled');$('roll-status').textContent='Ready to roll';$('experiment-note').textContent='Four rolls produce one count. Repeat the experiment to see how the counts vary.';$('announcement').textContent='Experiments reset.';return snapshot();}
+function changeEvent(type,k){if(!['exact','atmost','atleast'].includes(type)||!Number.isInteger(k)||k<0||k>4)throw new Error('Choose exactly, atmost, or atleast, and a whole number from 0 to 4.');$('event-type').value=type;$('threshold').value=String(k);renderChart();return snapshot();}
+function getOrderGroups(){
+ return includedCounts().map(x=>{
+  const orders=[];
+  for(let mask=15;mask>=0;mask--){
+   const pattern=Array.from({length:N},(_,j)=>Boolean(mask & (1<<(N-1-j))));
+   if(pattern.filter(Boolean).length===x)orders.push(pattern);
+  }
+  return {x,orders,coefficient:choose(N,x),probabilityPerOrder:P**x*(1-P)**(N-x),probability:probabilityMass[x]};
+ });
+}
+function renderOrders(reanimate=false){
+ const type=$('event-type').value,k=Number($('threshold').value),key=type+':'+k;
+ if(key===renderedOrdersKey&&!reanimate)return;
+ renderedOrdersKey=key;
+ const groups=getOrderGroups(),total=groups.reduce((sum,group)=>sum+group.orders.length,0);
+ const wording=type==='exact'?'exactly':type==='atmost'?'at most':'at least';
+ const operator=type==='exact'?'=':type==='atmost'?'≤':'≥';
+ const probability=groups.reduce((sum,group)=>sum+group.probability,0);
+ $('orders-summary').textContent=`Show ${total===1?'the one possible order':'all '+total+' possible orders'} for ${wording} ${k} ${k===1?'six':'sixes'}`;
+ $('orders-explanation').textContent=type==='exact'
+  ?'Each row specifies which rolls show six. “Not six” includes any of the other five faces.'
+  :`Include ${groups.map(group=>group.x).join(', ')} ${groups.length===1&&groups[0].x===1?'six':'sixes'}. The orders are grouped by their number of sixes. “Not six” includes any of the other five faces.`;
+ let index=0;
+ $('orders').innerHTML=groups.map(group=>{
+  const rows=group.orders.map(pattern=>{
+   const number=++index;
+   const description=pattern.map((six,j)=>`roll ${j+1}: ${six?'six':'not six'}`).join(', ');
+   return `<div class="sequence" style="animation-delay:${(number-1)*.045}s" aria-label="Order ${number}, ${description}"><span class="sequence-number" aria-hidden="true">${number}</span>${pattern.map(six=>`<span class="outcome${six?' six':''}" aria-hidden="true">${six?'Six':'Not six'}</span>`).join('')}</div>`;
+  }).join('');
+  return `<section class="order-group" aria-label="Exactly ${group.x} ${group.x===1?'six':'sixes'}"><h3>${group.x} ${group.x===1?'six':'sixes'} · ${group.orders.length} ${group.orders.length===1?'order':'orders'}</h3><p class="group-probability">P(X = ${group.x}) = ${group.coefficient} × (1/6)<sup>${group.x}</sup> × (5/6)<sup>${N-group.x}</sup> ≈ ${group.probability.toFixed(4)} (${percentage(group.probability)})</p><div class="orders">${rows}</div></section>`;
+ }).join('');
+ const terms=type==='exact'
+  ?`${groups[0].coefficient} × (1/6)<sup>${k}</sup> × (5/6)<sup>${N-k}</sup>`
+  :groups.map(group=>`P(X = ${group.x})`).join(' + ');
+ $('orders-formula').innerHTML=`P(X ${operator} ${k}) = ${terms} ≈ ${probability.toFixed(4)} = ${percentage(probability)}`;
+ $('orders-note').innerHTML=groups.length===1
+  ?`Each order has probability (1/6)<sup>${groups[0].x}</sup>(5/6)<sup>${N-groups[0].x}</sup>. ${total===1?'There is one qualifying order.':'The orders are disjoint, so we add their probabilities.'}`
+  :'Orders with different numbers of sixes have different probabilities. Add the group probabilities to obtain the probability of the selected event.';
+}
+$('roll').addEventListener('click',()=>runExperiment().catch(error=>{$('announcement').textContent=error.message;}));
+$('repeat').addEventListener('click',()=>addExperiments(100).catch(error=>{$('announcement').textContent=error.message;}));
+$('reset').addEventListener('click',reset);
+$('event-type').addEventListener('change',renderChart);$('threshold').addEventListener('change',renderChart);
+$('orders-details').addEventListener('toggle',()=>{if($('orders-details').open)renderOrders(true);});
+renderSlots();renderChart();
+// Use the same visible actions when browser WebMCP is available.
+if(document.modelContext?.registerTool){
+ const lifecycle=new AbortController();
+ const register=tool=>{try{Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}};
+ register({name:'read_dice_experiments',description:'Read the current count distribution, latest die rolls, and selected probability event.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute:()=>snapshot()});
+ register({name:'simulate_dice_experiments',description:'Simulate independent experiments of four fair die rolls and add their counts to the visible graph.',inputSchema:{type:'object',properties:{amount:{type:'integer',minimum:1,maximum:10000}},required:['amount'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute:input=>addExperiments(input?.amount)});
+ register({name:'set_dice_probability_event',description:'Select exactly, at most, or at least k sixes and update the highlighted graph bars.',inputSchema:{type:'object',properties:{type:{enum:['exact','atmost','atleast']},k:{type:'integer',minimum:0,maximum:4}},required:['type','k'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute:input=>changeEvent(input?.type,input?.k)});
+ window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
+}
+</script>
+</body>
+</html>
